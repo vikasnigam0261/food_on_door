@@ -1,0 +1,466 @@
+{
+  "intents": [
+    {
+      "intent": "Greeting",
+      "examples": [
+        {
+          "text": "Good Morning"
+        },
+        {
+          "text": "Hello"
+        },
+        {
+          "text": "Hey"
+        },
+        {
+          "text": "Hi"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "menu",
+      "examples": [
+        {
+          "text": "Can I get the menu"
+        },
+        {
+          "text": "Can you display the menu"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "order",
+      "examples": [
+        {
+          "text": "Can I order"
+        },
+        {
+          "text": "can you place my order"
+        },
+        {
+          "text": "I would like to order"
+        },
+        {
+          "text": "Please order"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "timings",
+      "examples": [
+        {
+          "text": "What are the timings"
+        }
+      ],
+      "description": ""
+    }
+  ],
+  "entities": [
+    {
+      "entity": "food_items",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "Chicken Biryani",
+          "synonyms": []
+        },
+        {
+          "type": "synonyms",
+          "value": "Chicken Manchurian",
+          "synonyms": [
+            "Chicken 65",
+            "Chicken Balls"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "Dragon Chicken",
+          "synonyms": []
+        },
+        {
+          "type": "synonyms",
+          "value": "Paneer Masala",
+          "synonyms": []
+        },
+        {
+          "type": "synonyms",
+          "value": "Tandoori Roti",
+          "synonyms": []
+        }
+      ],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "sys-number",
+      "values": [],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "time",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "Weekdays",
+          "synonyms": [
+            "Friday",
+            "Monday",
+            "Thursday",
+            "Tuesday",
+            "Wednesday"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "Weekend",
+          "synonyms": [
+            "Saturday",
+            "Sunday"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    }
+  ],
+  "metadata": {
+    "api_version": {
+      "major_version": "v2",
+      "minor_version": "2018-11-08"
+    }
+  },
+  "dialog_nodes": [
+    {
+      "type": "standard",
+      "title": "Anything else",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "I didn't understand. You can try rephrasing."
+              },
+              {
+                "text": "Can you reword your statement? I'm not understanding."
+              },
+              {
+                "text": "I didn't get your meaning."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "anything_else",
+      "dialog_node": "Anything else",
+      "previous_sibling": "node_3_1626440539193",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "What is the food item you want to order?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "slot_7_1626441000859",
+      "event_name": "focus",
+      "dialog_node": "handler_1_1626441000873",
+      "previous_sibling": "handler_8_1626441000873"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "For which day do you want to know the timings?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "slot_8_1626442375266",
+      "event_name": "focus",
+      "dialog_node": "handler_1_1626442375279",
+      "previous_sibling": "handler_3_1626442375279"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "What is the quantity you want to order?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "slot_2_1626441857218",
+      "event_name": "focus",
+      "dialog_node": "handler_2_1626441857219",
+      "previous_sibling": "handler_9_1626441857219"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_8_1626442375266",
+      "context": {
+        "time": "@time"
+      },
+      "conditions": "@time",
+      "event_name": "input",
+      "dialog_node": "handler_3_1626442375279"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_7_1626441000859",
+      "context": {
+        "food_items": "@food_items"
+      },
+      "conditions": "@food_items",
+      "event_name": "input",
+      "dialog_node": "handler_8_1626441000873"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_2_1626441857218",
+      "context": {
+        "number": "@sys-number"
+      },
+      "conditions": "@sys-number",
+      "event_name": "input",
+      "dialog_node": "handler_9_1626441857219"
+    },
+    {
+      "type": "standard",
+      "title": "delete",
+      "output": {
+        "deleted": "<? context.remove('food_items') ?> <? context.remove('number') ?>",
+        "generic": [
+          {
+            "values": [],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_3_1626440539193",
+      "conditions": "true",
+      "dialog_node": "node_10_1626441411925"
+    },
+    {
+      "type": "standard",
+      "title": "Greeting",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Hi, Hope you are doing Great!"
+              },
+              {
+                "text": "How may I assist you?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "multiline"
+          }
+        ]
+      },
+      "conditions": "#Greeting",
+      "dialog_node": "node_1_1626440225840",
+      "previous_sibling": "node_4_1626442351381"
+    },
+    {
+      "type": "frame",
+      "title": "order",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Your order for $food_items of quantity $number has been placed successfully"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "next_step": {
+        "behavior": "skip_user_input"
+      },
+      "conditions": "#order",
+      "dialog_node": "node_3_1626440539193",
+      "previous_sibling": "node_1_1626440225840"
+    },
+    {
+      "type": "frame",
+      "title": "timings",
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "next_step": {
+        "behavior": "skip_user_input"
+      },
+      "conditions": "#timings",
+      "dialog_node": "node_4_1626442351381",
+      "previous_sibling": "node_4_1626442757423"
+    },
+    {
+      "type": "standard",
+      "title": "menu",
+      "output": {
+        "generic": [
+          {
+            "title": "MENU",
+            "source": "https://i.pinimg.com/564x/58/11/ca/5811ca05e3eacbc01f06fb29a06cb83e.jpg",
+            "description": "These are the items available",
+            "response_type": "image"
+          }
+        ]
+      },
+      "conditions": "#menu",
+      "dialog_node": "node_4_1626442757423",
+      "previous_sibling": "Welcome"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "deleted": "<? context.remove('time') ?>",
+        "generic": [
+          {
+            "values": [],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_4_1626442351381",
+      "conditions": "true",
+      "dialog_node": "node_5_1626442520165"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "Timings on Weekends are from 6 PM to 1 PM"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_4_1626442351381",
+      "conditions": "@time:Weekend",
+      "dialog_node": "response_4_1626442445388",
+      "previous_sibling": "node_5_1626442520165"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Timings on Weekdays are from 8 PM to 11 PM"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_4_1626442351381",
+      "conditions": "@time:Weekdays",
+      "dialog_node": "response_6_1626442481973",
+      "previous_sibling": "response_4_1626442445388"
+    },
+    {
+      "type": "slot",
+      "parent": "node_3_1626440539193",
+      "variable": "$number",
+      "dialog_node": "slot_2_1626441857218",
+      "previous_sibling": "slot_7_1626441000859"
+    },
+    {
+      "type": "slot",
+      "parent": "node_3_1626440539193",
+      "variable": "$food_items",
+      "dialog_node": "slot_7_1626441000859",
+      "previous_sibling": "node_10_1626441411925"
+    },
+    {
+      "type": "slot",
+      "parent": "node_4_1626442351381",
+      "variable": "$time",
+      "dialog_node": "slot_8_1626442375266",
+      "previous_sibling": "response_6_1626442481973"
+    },
+    {
+      "type": "standard",
+      "title": "Welcome",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Hello. How can I help you?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "welcome",
+      "dialog_node": "Welcome"
+    }
+  ],
+  "counterexamples": [],
+  "system_settings": {
+    "off_topic": {
+      "enabled": true
+    },
+    "disambiguation": {
+      "prompt": "Did you mean:",
+      "enabled": true,
+      "randomize": true,
+      "max_suggestions": 5,
+      "suggestion_text_policy": "title",
+      "none_of_the_above_prompt": "None of the above"
+    },
+    "human_agent_assist": {
+      "prompt": "Did you mean:"
+    },
+    "intent_classification": {
+      "training_backend_version": "v2"
+    },
+    "spelling_auto_correct": true
+  },
+  "learning_opt_out": false,
+  "name": "order",
+  "language": "en",
+  "description": ""
+}
